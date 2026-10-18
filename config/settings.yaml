@@ -1,0 +1,50 @@
+# SecPosture configuration. ${NAME} / ${NAME:-default} are read from the
+# environment, so secrets never have to live in this file. Every value shown
+# here is the default; delete what you do not need to change.
+
+profile: server                 # server | workstation
+
+# Controls (by id or whole category) you have reviewed and accept, so the
+# report stops flagging them. Example: [SSH-07, kernel]
+disabled_controls: []
+
+# SUID/SGID binaries and listening ports that are expected on this host, so
+# only the unexpected ones are surfaced.
+allowed_suid: []
+allowed_listen_ports: []
+
+# HMAC key that signs saved results and baselines; a tampered file is then
+# rejected on load. Without it, results carry a SHA-256 integrity checksum.
+signing_key: ${SECPOSTURE_SIGNING_KEY:-}
+
+ssh:
+  port: ${SECPOSTURE_SSH_PORT:-22}
+  connect_timeout: 15
+  command_timeout: 30
+  # known_hosts file used to verify the target's host key. An unknown or
+  # changed key aborts the audit (no trust-on-first-use).
+  known_hosts: ${SECPOSTURE_KNOWN_HOSTS:-}
+  key_file: ${SECPOSTURE_SSH_KEY:-}
+  allow_agent: true
+
+advisories:
+  enabled: true
+  # directory of OSV-format advisory JSON files (defaults to the bundled
+  # sample; replace with a real feed for production - see feeds note in README)
+  local_dir: ${SECPOSTURE_ADVISORIES:-}
+  use_osv_api: ${SECPOSTURE_OSV_API:-false}   # also query https://api.osv.dev
+  api_timeout: 20
+
+scoring:
+  grade_a: 90
+  grade_b: 80
+  grade_c: 70
+  grade_d: 60
+
+dashboard:
+  # scrypt hash from `secposture hash-password`
+  password_hash: ${SECPOSTURE_DASHBOARD_PASSWORD_HASH:-}
+  results_dir: ${SECPOSTURE_RESULTS_DIR:-results}
+  session_minutes: 720
+  # host names the dashboard answers to when served beyond localhost
+  allowed_hosts: []
