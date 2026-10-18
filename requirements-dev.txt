@@ -1,0 +1,8 @@
+-r requirements.txt
+streamlit>=1.40
+pandas>=2.1
+plotly>=5.20
+pytest>=8.0
+ruff>=0.4
+bandit>=1.7
+pip-audit>=2.7
