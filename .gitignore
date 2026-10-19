@@ -15,3 +15,5 @@ results/
 *.sp.json
 *.report.html
 baselines/*.json
+*.bundle
+sample-report.html
